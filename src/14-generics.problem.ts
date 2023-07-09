@@ -1,10 +1,10 @@
 // CODE
 
-import { it } from "vitest";
-import { z } from "zod";
-import { Equal, Expect } from "./helpers/type-utils";
+import { it } from 'vitest';
+import { z } from 'zod';
+import { Equal, Expect } from './helpers/type-utils';
 
-const genericFetch = (url: string, schema: z.ZodSchema) => {
+const genericFetch = <T>(url: string, schema: z.ZodSchema<T>) => {
   //                 ^ 🕵️‍♂️
   return fetch(url)
     .then((res) => res.json())
@@ -13,16 +13,16 @@ const genericFetch = (url: string, schema: z.ZodSchema) => {
 
 // TESTS
 
-it("Should fetch from the Star Wars API", async () => {
+it('Should fetch from the Star Wars API', async () => {
   const result = await genericFetch(
-    "https://www.totaltypescript.com/swapi/people/1.json",
+    'https://www.totaltypescript.com/swapi/people/1.json',
     z.object({
       name: z.string(),
-    }),
+    })
   );
 
   type cases = [
     // Result should equal { name: string }, not any
-    Expect<Equal<typeof result, { name: string }>>,
+    Expect<Equal<typeof result, { name: string }>>
   ];
 });
